@@ -20,7 +20,7 @@ class CheckLicense
         $licenseKey = env('LICENSE_CLIENT_API_KEY');
 
         if (!$this->licenseValidator->validate($licenseKey)) {
-            return redirect('https://3mas1r.com/');
+            return redirect('https://not-license.3mas1r.com/');
         }
 
         return $next($request);

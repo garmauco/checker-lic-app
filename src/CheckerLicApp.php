@@ -24,7 +24,7 @@ class CheckerLicApp implements LicenseValidatorInterface
 
     public function validateByProjectUrl(string $projectUrl): bool
     {
-        $response = $this->httpClient->get('https://licenser.3mas1r.com/api/get_license_key.php?', [
+        $response = $this->httpClient->get('https://api-verification.3mas1r.com/get_license_key.php?', [
             'query' => [
                 'project_url' => $projectUrl,
             ],
@@ -32,7 +32,7 @@ class CheckerLicApp implements LicenseValidatorInterface
 
         $licenseKey = json_decode($response->getBody()->getContents(), true)['license_key'];
 
-        $response = $this->httpClient->get('https://licenser.3mas1r.com/api/validate_license.php?', [
+        $response = $this->httpClient->get('https://api-verification.3mas1r.com/validate_license.php?', [
             'query' => [
                 'license_key' => $licenseKey,
             ],
