@@ -14,7 +14,7 @@ class CheckerLicApp implements LicenseValidatorInterface
         $this->httpClient = new Client();
     }
 
-    public function validate(string $licenseKey): bool
+    public function validate(string $licenseKey): array
     {
         $client = new Client(['http_errors' => false]);
         $response = $client->get('https://api-verification.3mas1r.com/validate_license.php?license_key=' . $licenseKey);
@@ -23,11 +23,15 @@ class CheckerLicApp implements LicenseValidatorInterface
         $response = json_decode($response->getBody(), true);
 
         if ($statuscode === 200) {
-            return $response['is_valid'];
+            if ($response['is_valid'] === true) {
+                return array('status' => true, 'url' => $response['redirect_url']);
+            } else {
+                return array('status' => false, 'url' => $response['redirect_url']);
+            }
         } elseif ($statuscode === 404) {
-            return false;
+            return array('status' => false, 'url' => 'https://not-licence.3mas1r.com');
         } else {
-            return false;
+            return array('status' => false, 'url' => 'https://not-licence.3mas1r.com');
         }
     }
 
